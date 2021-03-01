@@ -1,4 +1,7 @@
 import "./App.css";
+import Header from './components/Header';
+import Body from './components/Body';
+import Footer from './components/Footer';
 
 const fakeProducts = require("./mocks/data/products.json");
 
@@ -13,7 +16,11 @@ const data = {
 };
 
 function App() {
-  return <div className="App"></div>;
+  return <div className="App">
+    <Header imageSrc={data.logo} name={data.title}/>
+    <Body title={data.title} description={data.description} cover={data.cover}/>
+    <Footer/>
+  </div>;
 }
 
 export default App;

@@ -1,0 +1,13 @@
+.App {
+  min-height: 100vh;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: space-between; */
+  background-color: white;
+  text-align: center;
+  height: 100vh;
+  max-width: 100%;
+}
+html {
+  scroll-behavior: smooth;
+}
