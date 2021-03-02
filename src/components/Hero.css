@@ -4,11 +4,17 @@
 }
 
 .hero {
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 20px;
+  margin-bottom: 40px;
   width: 90%;
   height: 60vh;
   background-size: cover;
   background-position: 0 60%;
+  padding-top: 40px;
+  padding-left: 40px;
+  box-sizing: border-box;
 }
 /* .hero img {
   
@@ -20,17 +26,18 @@
 .hero-title {
   padding: 20px;
   max-width: 40%;
-  height: 70%;
+  height: 80%;
   text-align: left;
   background-color: white;
-  margin-top: 40px;
-  margin-left: 40px;
+  /* margin-top: 40px;
+  margin-left: 40px; */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-content: space-between;
 }
 .hero button {
+  margin-top: 20px;
   width: 30%;
   border-style: none;
   font-weight: 600;
@@ -49,9 +56,8 @@
   font-family: 'Roboto Slab', serif;
 }
 .hero-title h1 {
-  margin-bottom: 0;
+  margin-top: 10px;
 }
 .hero-title h2 {
-  margin-bottom: 0;
-  margin-top: 0;
+  margin-bottom: 20px;
 }

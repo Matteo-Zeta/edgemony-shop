@@ -1,0 +1,57 @@
+.Card {
+  position: relative;
+  display: inline-flex;
+  height: 300px;
+  width: 200px;
+  background-color: white;
+  flex-direction: column;
+  margin-left: 25px;
+  margin-right: 25px;
+  margin-bottom: 20px;
+  padding: 10px;
+  text-align: left;
+  border-radius: 5px;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);
+}
+
+.Card img {
+  width: 200px; 
+  height: 150px; 
+  object-fit: contain;
+  margin-bottom: 30px;
+  /* object-position: 0 60%; */
+}
+.info-wrapper {
+  display: inline;
+  max-width: 200px;
+}
+.Card h3 {
+  margin-top: 8px;
+  font-size: 13px;
+}
+.price-container {
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 10px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.Card button {
+  border-style: none;
+  font-weight: 600;
+  background-color: rgb(32, 32, 32);
+  color:white;
+  border-radius: 3px;
+  font-size: medium;
+  padding: 5px;
+  cursor: pointer;
+}
+.Card button:hover {
+  background-color: rgb(56, 56, 56);
+  color:white;
+}

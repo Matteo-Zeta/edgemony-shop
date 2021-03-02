@@ -1,7 +1,6 @@
 .Footer {
-  position: relative;
-  bottom: 0;
-  height: 5%;
+  z-index: 2;
+  height: 40px;
   max-width: 100%;
   background-color: whitesmoke;
   font-weight: 600;

@@ -14,11 +14,11 @@ const data = {
     "https://images.pexels.com/photos/4123897/pexels-photo-4123897.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
   products: fakeProducts,
 };
-
+console.log(fakeProducts);
 function App() {
   return <div className="App">
     <Header imageSrc={data.logo} name={data.title}/>
-    <Body title={data.title} description={data.description} cover={data.cover}/>
+    <Body products={data.products} title={data.title} description={data.description} cover={data.cover}/>
     <Footer/>
   </div>;
 }
