@@ -18,3 +18,11 @@ html {
   margin: 0;
   padding: 0;
 }
+.products-container {
+  margin-top: 20px;
+  display: block;
+  max-width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
