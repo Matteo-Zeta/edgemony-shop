@@ -1,0 +1,80 @@
+.ProductModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 10;
+}
+
+.ProductModal .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #00000094;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+.ProductModal .modal-body {
+  min-height: 400px;
+  max-width: 280px;
+  background-color: white;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+  text-align: left;
+  border-radius: 5px;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);
+}
+
+.ProductModal .modal-price-container {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+.ProductModal img {
+  margin-left: auto;
+  margin-right: auto;
+  width: 200px; 
+  height: 200px; 
+  object-fit: contain;
+}
+.ProductModal .info-wrapper h3 {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+@media screen and (min-width: 620px) {
+.ProductModal .modal-body {
+  z-index: 30;
+  max-width: 520px;
+  width: 90%;
+  background-color: white;
+  padding: 30px;
+
+  border-radius: 10px;
+}
+.ProductModal img {
+  margin-left: 25%;
+  margin-right: 25%;
+  width: 200px; 
+  height: 200px; 
+  object-fit: contain;
+}
+.ProductModal .info-wrapper {
+  max-width: 290px;
+  max-height: 200px;
+}
+.ProductModal .info-wrapper p {
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+}

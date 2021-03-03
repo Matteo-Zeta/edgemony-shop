@@ -1,5 +1,6 @@
 import "./App.css";
 
+
 import Header from './components/Header';
 import Hero from './components/Hero'
 import Card from './components/Card'
@@ -17,7 +18,9 @@ const data = {
   products: fakeProducts,
 };
 console.log(fakeProducts);
+
 function App() {
+
   return <div className="App">
     <Header imageSrc={data.logo} name={data.title}/>
     <Hero title={data.title} description={data.description} cover={data.cover}></Hero>
@@ -27,6 +30,5 @@ function App() {
     <Footer/>
   </div>;
 }
-
 export default App;
 

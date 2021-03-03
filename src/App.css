@@ -1,12 +1,12 @@
 .App {
-  min-height: 100vh;
+  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   background-color: white;
   text-align: center;
-  height: 100%;
-  max-width: 100%;
+  /* height: 100%; */
+  width: 100vw;
 }
 html {
   scroll-behavior: smooth;
