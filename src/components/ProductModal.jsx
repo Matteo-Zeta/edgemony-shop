@@ -4,24 +4,29 @@ import './ProductModal.css';
 
 
 function ProductModal(props) {
-  const { products, isOpen, closeModal } = props;
+  const { content, isOpen, closeModal } = props;
 
-  return isOpen ? (
-    <div className="ProductModal">
+  return  (
+    <div className={`ProductModal ${ isOpen ? `isOpen` : '' }`}>
       <div className="overlay">
         <div className="modal-body">
-          <img src={products.image} alt="example item" />
-          <div className="info-wrapper">
-            <h3>{products.title}</h3>
-            <p>{products.description}</p>
-          </div>
-          <div className="modal-price-container">
-            <b>{products.price} €</b>
-            <button type="button" onClick={() => closeModal()}>Close</button>
-          </div>
+          { !!content ? (
+            <div className="content">
+              <img src={content.image} alt="example item" />
+              <div className="info-wrapper">
+                <h3>{content.title}</h3>
+                <p>{content.description}</p>
+                <hr />
+              </div>
+              <div className="modal-price-container">
+                <b>Price: {content.price} €</b>
+                <button type="button" onClick={() => closeModal()}>Close</button>
+              </div>
+            </div>
+          ) : null}
         </div>
       </div>
     </div>
-  ) : null;
+  )
 }
 export default ProductModal;
