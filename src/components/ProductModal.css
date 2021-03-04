@@ -25,14 +25,19 @@
   justify-content: space-around;
 }
 .ProductModal .modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
   min-height: 400px;
-  max-width: 280px;
+  min-width: 280px;
+  max-width: 90%;
   background-color: white;
   margin-left: auto;
   margin-right: auto;
   padding: 10px;
   text-align: left;
-  border-radius: 5px;
+  border-radius: 10px;
   box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);
 }
 
@@ -40,38 +45,48 @@
   margin-top: 10px;
   display: flex;
   justify-content: space-between;
+  width: 100%;
 }
 .ProductModal img {
-  margin-left: auto;
-  margin-right: auto;
   width: 200px; 
   height: 200px; 
   object-fit: contain;
+  margin-bottom: 20px;
 }
 .ProductModal .info-wrapper h3 {
   font-size: 16px;
   margin-bottom: 5px;
 }
+.ProductModal hr {
+  width: 100%;
+  border: 1px solid rgb(32, 32, 32);
+  margin-top: 10px;
+}
+.modal-price-container button {
+  border-style: none;
+  font-weight: 600;
+  background-color: rgb(32, 32, 32);
+  color:white;
+  border-radius: 3px;
+  font-size: medium;
+  padding: 5px;
+  cursor: pointer;
+}
+.modal-price-container button:hover {
+  background-color: rgb(56, 56, 56);
+  color:white;
+}
 @media screen and (min-width: 620px) {
 .ProductModal .modal-body {
-  z-index: 30;
   max-width: 520px;
   width: 90%;
-  background-color: white;
   padding: 30px;
-
-  border-radius: 10px;
-}
-.ProductModal img {
-  margin-left: 25%;
-  margin-right: 25%;
-  width: 200px; 
-  height: 200px; 
-  object-fit: contain;
+  box-sizing: border-box;
 }
 .ProductModal .info-wrapper {
-  max-width: 290px;
+  width: 100%;
   max-height: 200px;
+  margin-bottom: 20px;
 }
 .ProductModal .info-wrapper p {
   font-size: 13px;

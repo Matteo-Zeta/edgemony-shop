@@ -21,7 +21,7 @@
   margin-bottom: 20px;
   /* object-position: 0 60%; */
 }
-.info-wrapper {
+.Card .info-wrapper {
   display: inline;
   max-width: 200px;
 }
