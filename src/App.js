@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import "./App.css";
 
@@ -8,7 +8,7 @@ import Card from './components/Card'
 import Footer from './components/Footer';
 import ProductModal from './components/ProductModal';
 
-const fakeProducts = require("./mocks/data/products.json");
+// const fakeProducts = require("./mocks/data/products.json");
 
 const data = {
   title: "Edgemony Shop",
@@ -17,13 +17,13 @@ const data = {
     "https://edgemony.com/wp-content/uploads/2020/03/cropped-Logo-edgemony_TeBIANCO-04.png",
   cover:
     "https://images.pexels.com/photos/4123897/pexels-photo-4123897.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-  products: fakeProducts,
 };
 
 
 function App() {
-  const [ modalIsOpen, setModalIsOpen ] = useState(false) // modale aperta o meno
-  const [ productInModal, setProductInModal ] = useState(null) // prodotti nella modale
+  // Modal logic
+  const [modalIsOpen, setModalIsOpen] = useState(false) // modale aperta o meno
+  const [productInModal, setProductInModal] = useState(null) // prodotti nella modale
 
   function openProductModal(product) {
     console.log(product)
@@ -38,15 +38,36 @@ function App() {
       setProductInModal(null)
     }, 500)
   }
+  useEffect(() => {
+    if (modalIsOpen) {
+      document.body.style.height = `100vh`
+      document.body.style.overflow = `hidden`
+    } else {
+      document.body.style.height = ``
+      document.body.style.overflow = ``
+    }
+  }, [ modalIsOpen ])
+  
+  // API data logic
+  const [ products, setProducts ] = useState([])
+
+  useEffect(() => {
+    // setIsLoading(true)
+    fetch('https://fakestoreapi.com/products')
+    .then(response => response.json())
+    .then(data => {
+      setProducts(data)
+    })
+  }, [])
 
   return <div className="App">
-    <Header imageSrc={data.logo} name={data.title}/>
+    <Header imageSrc={data.logo} name={data.title} />
     <Hero title={data.title} description={data.description} cover={data.cover} />
-    <ProductModal isOpen={ modalIsOpen } content={productInModal} closeModal={closeModal} />
+    <ProductModal isOpen={modalIsOpen} content={productInModal} closeModal={closeModal} />
     <div className="products-container">
-    {(data.products).map((product) => <Card key={product.id} products={product} openProductModal={openProductModal} />)}
+      {(products).map((product) => <Card key={product.id} products={product} openProductModal={openProductModal} />)}
     </div>
-    <Footer/>
+    <Footer />
   </div>;
 }
 export default App;
