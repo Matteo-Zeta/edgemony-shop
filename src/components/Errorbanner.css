@@ -1,0 +1,16 @@
+.Errorbanner {
+  /* width: 70%; */
+  padding: 10px;
+  background-color: rgba(255, 0, 0, 0.6);
+  color: brown;
+  border: 1px solid brown;
+  margin-bottom: 30px;
+}
+.Errorbanner button {
+  background: none;
+  border: none;
+  margin-left: 15px;
+  text-decoration: underline;
+  color: white;
+  cursor: pointer;
+}
