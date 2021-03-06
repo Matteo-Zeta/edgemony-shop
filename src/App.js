@@ -3,8 +3,10 @@ import { useState, useEffect } from 'react';
 import "./App.css";
 
 import Header from './components/Header';
-import Hero from './components/Hero'
-import Card from './components/Card'
+import Hero from './components/Hero';
+import Card from './components/Card';
+import Loader from './components/Loader';
+import Errorbanner from './components/Errorbanner';
 import Footer from './components/Footer';
 import ProductModal from './components/ProductModal';
 
@@ -46,26 +48,42 @@ function App() {
       document.body.style.height = ``
       document.body.style.overflow = ``
     }
-  }, [ modalIsOpen ])
-  
+  }, [modalIsOpen])
+
   // API data logic
-  const [ products, setProducts ] = useState([])
+  const [products, setProducts] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [isError, setIsError] = useState(false)
+  const [retryCall, setRetryCall] = useState(false)
 
   useEffect(() => {
-    // setIsLoading(true)
+    setIsError(false)
+    setIsLoading(true)
     fetch('https://fakestoreapi.com/products')
-    .then(response => response.json())
-    .then(data => {
-      setProducts(data)
-    })
-  }, [])
+      .then(response => response.json())
+      .then(data => {
+        const hasError = Math.random() > 0.5
+        if (!hasError) {
+          setProducts(data)
+          setIsLoading(false)
+        } else {
+          throw new Error('error');
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false)
+        setIsError(true)
+      })
+  }, [retryCall])
 
   return <div className="App">
     <Header imageSrc={data.logo} name={data.title} />
     <Hero title={data.title} description={data.description} cover={data.cover} />
     <ProductModal isOpen={modalIsOpen} content={productInModal} closeModal={closeModal} />
     <div className="products-container">
-      {(products).map((product) => <Card key={product.id} products={product} openProductModal={openProductModal} />)}
+      <Loader isLoading={isLoading} />
+      {!isLoading && <Errorbanner isError={isError} retryCall={retryCall} setRetryCall={setRetryCall} />}
+      {!isError && ((products).map((product) => <Card key={product.id} products={product} openProductModal={openProductModal} />))}
     </div>
     <Footer />
   </div>;
