@@ -56,6 +56,17 @@
   align-items: center;
   justify-content: space-around;
 }
+.ProductModal .content button {
+  border-style: none;
+  font-weight: 600;
+  background-color: rgb(32, 32, 32);
+  color:white;
+  border-radius: 3px;
+  font-size: medium;
+  padding: 5px;
+  cursor: pointer;
+  align-self: flex-start;
+}
 .ProductModal .modal-price-container {
   margin-top: 10px;
   display: flex;

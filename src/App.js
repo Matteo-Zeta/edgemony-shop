@@ -4,6 +4,7 @@ import "./App.css";
 import './components/Search.css';
 
 import Header from './components/Header';
+// import Cart from './components/Cart';
 import Hero from './components/Hero';
 // import Search from './components/Search';
 import Card from './components/Card';
@@ -12,7 +13,6 @@ import Errorbanner from './components/Errorbanner';
 import Footer from './components/Footer';
 import ProductModal from './components/ProductModal';
 
-// const fakeProducts = require("./mocks/data/products.json");
 
 const data = {
   title: "Edgemony Shop",
@@ -58,7 +58,11 @@ function App() {
     const target = evt.target.value;
     setInput(target);
   }
+  // Cart Logic
+  const [priceInCart, setPriceInCart] = useState(0)
+  const [itemsInCart, setItemsInCart] = useState(0)
 
+  
   // API data logic
   const [products, setProducts] = useState([])
   const [isLoading, setIsLoading] = useState(false)
@@ -88,16 +92,13 @@ function App() {
   return <div className="App">
     <Header 
     imageSrc={data.logo}
-    name={data.title}
+    priceInCart={priceInCart}
+    itemsInCart={itemsInCart}
     />
     <Hero 
     title={data.title} description={data.description}
     cover={data.cover} 
     />
-    {/* <Search 
-    products={products} 
-    setProducts={setProducts}
-    /> */}
     <div className='Search'>
       <input
       id='search-bar' placeholder='Search..'
@@ -105,12 +106,11 @@ function App() {
       />
     </div>
     <ProductModal 
-    isOpen={modalIsOpen} content={productInModal} 
-    closeModal={closeModal}
+    closeModal={closeModal} isOpen={modalIsOpen} content={productInModal}
+    setPriceInCart={setPriceInCart} priceInCart={priceInCart}
+    setItemsInCart={setItemsInCart} itemsInCart={itemsInCart}
     />
-    <div
-    className="products-container"
-    >
+    <div className="products-container">
       <Loader 
       isLoading={isLoading} 
       />
