@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 
 import "./App.css";
+import './components/Search.css';
 
 import Header from './components/Header';
 import Hero from './components/Hero';
+// import Search from './components/Search';
 import Card from './components/Card';
 import Loader from './components/Loader';
 import Errorbanner from './components/Errorbanner';
@@ -50,6 +52,13 @@ function App() {
     }
   }, [modalIsOpen])
 
+  // Search logic
+  const [input, setInput] = useState('')
+  function search(evt) {
+    const target = evt.target.value;
+    setInput(target);
+  }
+
   // API data logic
   const [products, setProducts] = useState([])
   const [isLoading, setIsLoading] = useState(false)
@@ -62,7 +71,7 @@ function App() {
     fetch('https://fakestoreapi.com/products')
       .then(response => response.json())
       .then(data => {
-        const hasError = Math.random() > 0.5
+        const hasError = Math.random() > 0.8
         if (!hasError) {
           setProducts(data)
           setIsLoading(false)
@@ -77,15 +86,48 @@ function App() {
   }, [retryCall])
 
   return <div className="App">
-    <Header imageSrc={data.logo} name={data.title} />
-    <Hero title={data.title} description={data.description} cover={data.cover} />
-    <ProductModal isOpen={modalIsOpen} content={productInModal} closeModal={closeModal} />
-    <div className="products-container">
-      <Loader isLoading={isLoading} />
-      {!isLoading && <Errorbanner isError={isError} retryCall={retryCall} setRetryCall={setRetryCall} />}
-      {!isError && ((products).map((product) => <Card key={product.id} products={product} openProductModal={openProductModal} />))}
+    <Header 
+    imageSrc={data.logo}
+    name={data.title}
+    />
+    <Hero 
+    title={data.title} description={data.description}
+    cover={data.cover} 
+    />
+    {/* <Search 
+    products={products} 
+    setProducts={setProducts}
+    /> */}
+    <div className='Search'>
+      <input
+      id='search-bar' 
+      onChange={search} type='text'
+      />
     </div>
-    <Footer />
+    <ProductModal 
+    isOpen={modalIsOpen} content={productInModal} 
+    closeModal={closeModal}
+    />
+    <div
+    className="products-container"
+    >
+      <Loader 
+      isLoading={isLoading} 
+      />
+        {!isLoading && 
+         <Errorbanner 
+         isError={isError} retryCall={retryCall} 
+         setRetryCall={setRetryCall} 
+        />}
+        {!isError && (products.filter((product) => {
+          return product.title.toUpperCase().includes(input.toUpperCase())
+        }).map((product) => 
+        <Card 
+        key={product.id} products={product} 
+        openProductModal={openProductModal} 
+        />))}
+    </div>
+    <Footer/>
   </div>;
 }
 export default App;

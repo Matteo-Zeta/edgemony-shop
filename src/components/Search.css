@@ -1,0 +1,9 @@
+#search-bar {
+  width: 300px;
+  margin-bottom: 20px;
+  height: 30px;
+  padding-left: 10px;
+  border: none;
+  background-color: rgba(32, 32, 32, 0.1);
+  color: white;
+}
