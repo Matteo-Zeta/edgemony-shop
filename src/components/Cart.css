@@ -1,0 +1,28 @@
+.Cart {
+  height: 100%;
+  width: 150px;
+
+  display: flex;
+  align-items: center;
+  color: white;
+}
+.Cart .items-number {
+  width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.Cart .items-number img {
+  height: 32px;
+  width: 32px;
+  cursor: pointer;
+}
+.Cart .number-container {
+border-radius: 25px;
+background-color: coral;
+height: 25px;
+width: 25px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+}
