@@ -100,7 +100,7 @@ function App() {
     /> */}
     <div className='Search'>
       <input
-      id='search-bar' 
+      id='search-bar' placeholder='Search..'
       onChange={search} type='text'
       />
     </div>

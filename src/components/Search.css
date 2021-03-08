@@ -5,5 +5,8 @@
   padding-left: 10px;
   border: none;
   background-color: rgba(32, 32, 32, 0.1);
-  color: white;
+  color: black;
+}
+#search-bar :active {
+  border: none;
 }
