@@ -12,6 +12,7 @@ import Loader from './components/Loader';
 import Errorbanner from './components/Errorbanner';
 import Footer from './components/Footer';
 import ProductModal from './components/ProductModal';
+import { fetchProducts, fetchCatogories } from "./services/api";
 
 
 const data = {
@@ -25,7 +26,7 @@ const data = {
 
 
 function App() {
-  // Modal logic
+  // Product-Modal logic
   const [modalIsOpen, setModalIsOpen] = useState(false) // modale aperta o meno
   const [productInModal, setProductInModal] = useState(null) // prodotti nella modale
 
@@ -65,28 +66,21 @@ function App() {
   
   // API data logic
   const [products, setProducts] = useState([])
+  const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
-  const [isError, setIsError] = useState(false)
+  const [isError, setIsError] = useState('')
   const [retryCall, setRetryCall] = useState(false)
 
   useEffect(() => {
-    setIsError(false)
+    setIsError('')
     setIsLoading(true)
-    fetch('https://fakestoreapi.com/products')
-      .then(response => response.json())
-      .then(data => {
-        const hasError = Math.random() > 0.8
-        if (!hasError) {
-          setProducts(data)
-          setIsLoading(false)
-        } else {
-          throw new Error('error');
-        }
+    Promise.all([fetchProducts(), fetchCatogories()])
+      .then(([products, categories]) => {
+        setProducts(products);
+        setCategories(categories);
       })
-      .catch((error) => {
-        setIsLoading(false)
-        setIsError(true)
-      })
+      .catch((err) => setIsError(err.message))
+      .finally(() => setIsLoading(false));
   }, [retryCall])
 
   return <div className="App">
