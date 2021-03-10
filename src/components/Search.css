@@ -1,12 +1,13 @@
-#search-bar {
-  width: 300px;
-  margin-bottom: 20px;
-  height: 30px;
-  padding-left: 10px;
-  border: none;
-  background-color: rgba(32, 32, 32, 0.1);
-  color: black;
+.Search {
+  position: relative;
 }
-#search-bar :active {
-  border: none;
+.Search input {
+  padding-left: 22px;
+  height: 25px;
+
+}
+.Search i {
+  position: absolute;
+  left: 5px;
+  top: 4px;
 }

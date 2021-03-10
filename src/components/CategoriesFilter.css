@@ -1,0 +1,11 @@
+/* .CategoriesFilter {
+  display: block;
+} */
+.CategoriesFilter .CategoryFilter {
+  margin-right: 7px;
+}
+@media screen and (max-width: 445px) {
+  .CategoriesFilter .CategoryFilter {
+    margin-top: 10px;
+  }
+  }
