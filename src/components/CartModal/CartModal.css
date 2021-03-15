@@ -1,0 +1,77 @@
+.CartModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+}
+.CartModal.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.CartModal .Cartmodal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #00000094;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  transition: opacity 0.5s ease-in-out;
+  opacity: 0;
+}
+.CartModal.is-open .Cartmodal-overlay {
+  opacity: 1;
+}
+.Cartmodal-body {
+  overflow: auto;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 80%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: start;
+  box-sizing: border-box;
+  box-shadow: 0 2px 36px rgba(0, 0, 0, 0.25);
+  transform: translateX(100%);
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out, transform 0.333s ease-out;
+}
+
+.CartModal.is-open .Cartmodal-body {
+  transform: translateX(0%);
+  opacity: 1;
+}
+.Cartmodal-body .Cart-header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: rgb(32, 32, 32);
+  font-family: 'Roboto Slab', serif;
+  color: white;
+  height: 70px;
+}
+
+.Cartmodal-body .product-wrapper {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.Cartmodal-body .Cart-footer {
+  padding: 10px;
+}
+@media (min-width: 700px) {
+  .Cartmodal-body {
+    width: 500px;
+  }
+}

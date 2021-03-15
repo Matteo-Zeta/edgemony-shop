@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 
 import "./App.css";
-import './components/Search.css';
 
-import Header from './components/Header';
-import Hero from './components/Hero';
-import Loader from './components/Loader';
-import Errorbanner from './components/Errorbanner';
-import Footer from './components/Footer';
-import ProductList from './components/ProductList';
-import ProductModal from './components/ProductModal';
+import Header from './components/Header/Header';
+import Hero from './components/Hero/Hero';
+import CartModal from './components/CartModal/CartModal';
+import Loader from './components/Loader/Loader';
+import Errorbanner from './components/ErrorBanner/Errorbanner';
+import Footer from './components/Footer/Footer';
+import ProductList from './components/ProductList/ProductList';
+import ProductModal from './components/ProductModal/ProductModal';
 import { fetchProducts, fetchCatogories } from "./services/api";
 
 
@@ -51,11 +51,6 @@ function App() {
     }
   }, [modalIsOpen])
 
-
-  // Cart Logic
-  const [priceInCart, setPriceInCart] = useState(0)
-  const [itemsInCart, setItemsInCart] = useState(0)
-
   
   // API data logic
   const [products, setProducts] = useState([])
@@ -76,21 +71,72 @@ function App() {
       .finally(() => setIsLoading(false));
   }, [retryCall])
 
+    // Cart Logic
+    const [cartIsOpen, setCartIsOpen] = useState(false);
+    useEffect(() => {
+      if (cartIsOpen) {
+        document.body.style.height = `100vh`
+        document.body.style.overflow = `hidden`
+      } else {
+        document.body.style.height = ``
+        document.body.style.overflow = ``
+      }
+    }, [cartIsOpen])
+    
+    const [cart, setCart] = useState([]);
+
+    const cartProducts = cart.map((cartItem) => {
+      const product = products.find((product) => product.id === cartItem.id);
+      return {
+        id: product.id,
+        quantity: cartItem.quantity,
+        title: product.title,
+        image: product.image,
+        price: product.price
+      }
+    });
+    const cartTotalPrice = cartProducts.reduce((acc, cartItem) => {
+      return acc + cartItem.price * cartItem.quantity;
+    }, 0)
+    const cartSize = cart.length;
+    const isProductInCart = productInModal !== null && 
+    cart.find((product)=> product.id === productInModal.id) != null;
+  
+    function addToCart(productId) {
+      setCart([...cart, { id: productId, quantity: 1}]);
+      closeModal();
+    }
+    function removeFromCart(productId) {
+      setCart(cart.filter((product) => product.id !== productId));
+    }
+    function setQuantity(productId, quantity) {
+      if (quantity < 1) {
+        throw new Error('Invalid quantity');
+      }
+      const newCart = cart.map((cartItem) => 
+      cartItem.id !== productId ? cartItem : { ...cartItem, quantity});
+      return setCart(newCart);
+    }
+
   return <div className="App">
     <Header 
-    imageSrc={data.logo}
-    priceInCart={priceInCart}
-    itemsInCart={itemsInCart}
+    imageSrc={data.logo} cartTotalPrice={cartTotalPrice}
+    cartSize={cartSize} setCartIsOpen={setCartIsOpen}
     />
     <Hero 
     title={data.title} description={data.description}
     cover={data.cover} 
     />
-
+    <CartModal
+    isOpen={cartIsOpen} setCartIsOpen={setCartIsOpen}
+    cartSize={cartSize} cartTotalPrice={cartTotalPrice}
+    productInCart={cartProducts} removeFromCart={removeFromCart}
+    setQuantity={setQuantity}
+    />
     <ProductModal 
-    closeModal={closeModal} isOpen={modalIsOpen} content={productInModal}
-    setPriceInCart={setPriceInCart} priceInCart={priceInCart}
-    setItemsInCart={setItemsInCart} itemsInCart={itemsInCart}
+    closeModal={closeModal} isOpen={modalIsOpen} 
+    content={productInModal} addToCart={addToCart}
+    isProductInCart={isProductInCart}
     />
     <Loader 
     isLoading={isLoading} 

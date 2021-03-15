@@ -4,8 +4,10 @@
   height: 60px;
 }
 .Header{
+  position: fixed;
+  top: 0;
+  left: 0;
   height: 70px;
-  max-width: 100%;
   width: 100%;
   z-index: 2;
   background-color: rgb(32, 32, 32);

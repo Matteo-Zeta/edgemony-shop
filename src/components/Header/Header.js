@@ -1,9 +1,10 @@
-import Cart from './Cart'
+import CartHeader from '../CartHeader/CartHeader'
 
 import './Header.css';
 
-function Header({imageSrc, priceInCart, itemsInCart}) {
-  return <header className="Header">
+function Header({imageSrc, cartSize, cartTotalPrice, setCartIsOpen }) {
+  return (
+  <header className="Header">
     <img id="logo" src={imageSrc} alt='logo' />
     {/* <div className="Header-info-wrapper">
       <span>Abbigliamento</span>
@@ -15,11 +16,14 @@ function Header({imageSrc, priceInCart, itemsInCart}) {
       />
     <strong>ACCEDI</strong>
     </div> */}
-          <Cart
-      priceInCart={priceInCart}
-      itemsInCart={itemsInCart}
-      />
+    <CartHeader
+    cartSize={cartSize}
+    cartTotalPrice={cartTotalPrice}
+    setCartIsOpen={setCartIsOpen}
+    />
   </header>
+  )
+
 }
 
 export default Header;

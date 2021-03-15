@@ -1,4 +1,4 @@
-import CategoryFilter from "./CategoryFilter";
+import CategoryFilter from "../CategoryFilter/CategoryFilter";
 
 import "./CategoriesFilter.css";
 

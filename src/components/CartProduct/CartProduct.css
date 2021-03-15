@@ -1,0 +1,48 @@
+.CartProduct {
+  margin-top: 20px;
+  /* background-color: wheat; */
+  display: flex;
+}
+.CartProduct .info-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  /* background-color: thistle; */
+  height: 100%;
+}
+.CartProduct #RemoveBtn {
+  margin-top: 10px;
+  width: fit-content;
+  border-style: none;
+  font-weight: 500;
+  background: none;
+  text-decoration: underline;
+
+  border-radius: 3px;
+  font-size: 14px;
+  padding: 3px;
+  cursor: pointer;
+}
+.CartProduct .quantity-wrapper {
+  margin-top: 10px;
+  width: 70px;
+  display: flex;
+  justify-content: space-around;
+}
+.quantity-wrapper button {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  font-size: large;
+  font-weight: 500;
+  color: white;
+  background-color: rgb(32, 32, 32);
+  border-style: none;
+
+}
+.CartProduct img {
+  width: 100px; 
+  max-height: 150px;
+  object-fit: contain;
+  margin-right: 10px;
+}

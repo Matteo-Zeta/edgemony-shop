@@ -1,9 +1,9 @@
 import { useState } from "react";
-import ProductCard from "./ProductCard";
-import Search from "./Search";
+import ProductCard from "../ProductCard/ProductCard";
+import Search from "../Search/Search";
+import CategoriesFilter from "../CategoriesFilter/CategoriesFilter";
 
 import "./ProductList.css";
-import CategoriesFilter from "./CategoriesFilter";
 
 function ProductList({ products, categories, openProductModal }) {
   const [searchTerm, setSearchTerm] = useState();
