@@ -3,13 +3,15 @@ import { useState, useEffect } from 'react';
 import "./App.css";
 
 import Header from './components/Header/Header';
+import Cart from './components/Cart/Cart'
+import ModalSidebar from './components/ModalSidebar/ModalSidebar'
+import Modal from './components/Modal/Modal'
 import Hero from './components/Hero/Hero';
-import CartModal from './components/CartModal/CartModal';
 import Loader from './components/Loader/Loader';
 import Errorbanner from './components/ErrorBanner/Errorbanner';
 import Footer from './components/Footer/Footer';
 import ProductList from './components/ProductList/ProductList';
-import ProductModal from './components/ProductModal/ProductModal';
+import ProductDetails from './components/ProductDetails/ProductDetails'
 import { fetchProducts, fetchCatogories } from "./services/api";
 
 
@@ -99,6 +101,7 @@ function App() {
       return acc + cartItem.price * cartItem.quantity;
     }, 0)
     const cartSize = cart.length;
+    let cartTitle = (!!cartSize ? "Your products:" : "The cart is empty")
     const isProductInCart = productInModal !== null && 
     cart.find((product)=> product.id === productInModal.id) != null;
   
@@ -127,17 +130,23 @@ function App() {
     title={data.title} description={data.description}
     cover={data.cover} 
     />
-    <CartModal
-    isOpen={cartIsOpen} setCartIsOpen={setCartIsOpen}
-    cartSize={cartSize} cartTotalPrice={cartTotalPrice}
-    productInCart={cartProducts} removeFromCart={removeFromCart}
-    setQuantity={setQuantity}
-    />
-    <ProductModal 
+    <ModalSidebar
+    isOpen={cartIsOpen} title={cartTitle}
+    setCartIsOpen={setCartIsOpen}
+    >
+      <Cart 
+      setQuantity={setQuantity} cartTotalPrice={cartTotalPrice}
+      productInCart={cartProducts} removeFromCart={removeFromCart}
+      />
+    </ModalSidebar>
+    <Modal 
     closeModal={closeModal} isOpen={modalIsOpen} 
-    content={productInModal} addToCart={addToCart}
-    isProductInCart={isProductInCart}
-    />
+    >
+      <ProductDetails 
+      isProductInCart={isProductInCart}
+      product={productInModal} addToCart={addToCart}     
+      />
+    </Modal>
     <Loader 
     isLoading={isLoading} 
     />
