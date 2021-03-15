@@ -4,7 +4,7 @@ function Errorbanner({ isError, retryCall, setRetryCall }) {
 
   return  isError ? (
   <div className="Errorbanner">
-      <strong>Ops!</strong> Somethings goes wrong :(
+      <strong>{isError}</strong>
       <button type='button' onClick={()=>setRetryCall(!retryCall)}>Try again</button>
     </div>
   ) : null

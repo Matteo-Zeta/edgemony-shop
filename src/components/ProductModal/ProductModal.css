@@ -98,7 +98,10 @@
   padding: 5px;
   cursor: pointer;
 }
-.modal-price-container button:hover {
+.modal-price-container #inCartBtn {
+  opacity: 0.5;
+}
+.modal-price-container #addBtn:hover {
   background-color: rgb(56, 56, 56);
   color:white;
 }

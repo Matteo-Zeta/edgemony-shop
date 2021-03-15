@@ -1,0 +1,33 @@
+.ProductList {
+  width: 100%;
+}
+
+.ProductList__filters {
+  display: flex;
+  text-align: start;
+  flex-direction: column;
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+@media screen and (min-width: 1250px) {
+  .ProductList__filters {
+    margin-left: 5%;
+  }
+  }
+
+.ProductList__filters .Search {
+  margin-bottom: 20px;
+}
+
+.ProductList__products {
+  margin-top: 20px;
+  display: block;
+  max-width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.ProductList .Product {
+  margin: 10px;
+}

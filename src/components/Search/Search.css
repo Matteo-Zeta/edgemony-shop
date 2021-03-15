@@ -1,0 +1,13 @@
+.Search {
+  position: relative;
+}
+.Search input {
+  padding-left: 22px;
+  height: 25px;
+
+}
+.Search i {
+  position: absolute;
+  left: 5px;
+  top: 4px;
+}

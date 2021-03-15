@@ -3,14 +3,9 @@ import './ProductModal.css';
 
 
 
-function ProductModal(props) {
-  const { content, isOpen, closeModal, setPriceInCart, priceInCart, itemsInCart, setItemsInCart } = props;
+function ProductModal({ content, isOpen, closeModal, addToCart, isProductInCart }) {
   
-  function addToCart(content) {
-    setItemsInCart(itemsInCart + 1)
-    setPriceInCart(priceInCart + content.price)
-    closeModal()
-  }
+
   return  (
     <div className={`ProductModal ${ isOpen ? `isOpen` : '' }`}>
       <div className="overlay">
@@ -26,7 +21,10 @@ function ProductModal(props) {
               </div>
               <div className="modal-price-container">
                 <b>Price: {content.price} €</b>
-                <button type="button" onClick={()=>addToCart(content)}>Add to cart</button>
+                { isProductInCart 
+                  ? <button type="button" id='inCartBtn'  disabled={true}>In cart</button>
+                  : <button type="button" id='addBtn' onClick={()=>addToCart(content.id)}>Add to cart</button>
+                }
               </div>
             </div>
           ) : null}

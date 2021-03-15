@@ -1,0 +1,13 @@
+.CategoryFilter {
+  cursor: pointer;
+  border: 1px solid;
+  border-radius: 3px;
+  background-color: white;
+  padding: 5px 10px;
+  font-weight: bold;
+  transition: color  .7s linear;
+}
+.CategoryFilter.selected {
+  background-color: rgb(32, 32, 32);
+  color: white;
+}

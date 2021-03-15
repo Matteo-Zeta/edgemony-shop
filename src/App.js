@@ -1,17 +1,16 @@
 import { useState, useEffect } from 'react';
 
 import "./App.css";
-import './components/Search.css';
 
-import Header from './components/Header';
-// import Cart from './components/Cart';
-import Hero from './components/Hero';
-// import Search from './components/Search';
-import Card from './components/Card';
-import Loader from './components/Loader';
-import Errorbanner from './components/Errorbanner';
-import Footer from './components/Footer';
-import ProductModal from './components/ProductModal';
+import Header from './components/Header/Header';
+import Hero from './components/Hero/Hero';
+import CartModal from './components/CartModal/CartModal';
+import Loader from './components/Loader/Loader';
+import Errorbanner from './components/ErrorBanner/Errorbanner';
+import Footer from './components/Footer/Footer';
+import ProductList from './components/ProductList/ProductList';
+import ProductModal from './components/ProductModal/ProductModal';
+import { fetchProducts, fetchCatogories } from "./services/api";
 
 
 const data = {
@@ -25,7 +24,7 @@ const data = {
 
 
 function App() {
-  // Modal logic
+  // Product-Modal logic
   const [modalIsOpen, setModalIsOpen] = useState(false) // modale aperta o meno
   const [productInModal, setProductInModal] = useState(null) // prodotti nella modale
 
@@ -52,81 +51,107 @@ function App() {
     }
   }, [modalIsOpen])
 
-  // Search logic
-  const [input, setInput] = useState('')
-  function search(evt) {
-    const target = evt.target.value;
-    setInput(target);
-  }
-  // Cart Logic
-  const [priceInCart, setPriceInCart] = useState(0)
-  const [itemsInCart, setItemsInCart] = useState(0)
-
   
   // API data logic
   const [products, setProducts] = useState([])
+  const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
-  const [isError, setIsError] = useState(false)
+  const [isError, setIsError] = useState('')
   const [retryCall, setRetryCall] = useState(false)
 
   useEffect(() => {
-    setIsError(false)
+    setIsError('')
     setIsLoading(true)
-    fetch('https://fakestoreapi.com/products')
-      .then(response => response.json())
-      .then(data => {
-        const hasError = Math.random() > 0.8
-        if (!hasError) {
-          setProducts(data)
-          setIsLoading(false)
-        } else {
-          throw new Error('error');
-        }
+    Promise.all([fetchProducts(), fetchCatogories()])
+      .then(([products, categories]) => {
+        setProducts(products);
+        setCategories(categories);
       })
-      .catch((error) => {
-        setIsLoading(false)
-        setIsError(true)
-      })
+      .catch((err) => setIsError(err.message))
+      .finally(() => setIsLoading(false));
   }, [retryCall])
+
+    // Cart Logic
+    const [cartIsOpen, setCartIsOpen] = useState(false);
+    useEffect(() => {
+      if (cartIsOpen) {
+        document.body.style.height = `100vh`
+        document.body.style.overflow = `hidden`
+      } else {
+        document.body.style.height = ``
+        document.body.style.overflow = ``
+      }
+    }, [cartIsOpen])
+    
+    const [cart, setCart] = useState([]);
+
+    const cartProducts = cart.map((cartItem) => {
+      const product = products.find((product) => product.id === cartItem.id);
+      return {
+        id: product.id,
+        quantity: cartItem.quantity,
+        title: product.title,
+        image: product.image,
+        price: product.price
+      }
+    });
+    const cartTotalPrice = cartProducts.reduce((acc, cartItem) => {
+      return acc + cartItem.price * cartItem.quantity;
+    }, 0)
+    const cartSize = cart.length;
+    const isProductInCart = productInModal !== null && 
+    cart.find((product)=> product.id === productInModal.id) != null;
+  
+    function addToCart(productId) {
+      setCart([...cart, { id: productId, quantity: 1}]);
+      closeModal();
+    }
+    function removeFromCart(productId) {
+      setCart(cart.filter((product) => product.id !== productId));
+    }
+    function setQuantity(productId, quantity) {
+      if (quantity < 1) {
+        throw new Error('Invalid quantity');
+      }
+      const newCart = cart.map((cartItem) => 
+      cartItem.id !== productId ? cartItem : { ...cartItem, quantity});
+      return setCart(newCart);
+    }
 
   return <div className="App">
     <Header 
-    imageSrc={data.logo}
-    priceInCart={priceInCart}
-    itemsInCart={itemsInCart}
+    imageSrc={data.logo} cartTotalPrice={cartTotalPrice}
+    cartSize={cartSize} setCartIsOpen={setCartIsOpen}
     />
     <Hero 
     title={data.title} description={data.description}
     cover={data.cover} 
     />
-    <div className='Search'>
-      <input
-      id='search-bar' placeholder='Search..'
-      onChange={search} type='text'
-      />
-    </div>
-    <ProductModal 
-    closeModal={closeModal} isOpen={modalIsOpen} content={productInModal}
-    setPriceInCart={setPriceInCart} priceInCart={priceInCart}
-    setItemsInCart={setItemsInCart} itemsInCart={itemsInCart}
+    <CartModal
+    isOpen={cartIsOpen} setCartIsOpen={setCartIsOpen}
+    cartSize={cartSize} cartTotalPrice={cartTotalPrice}
+    productInCart={cartProducts} removeFromCart={removeFromCart}
+    setQuantity={setQuantity}
     />
-    <div className="products-container">
-      <Loader 
-      isLoading={isLoading} 
-      />
-        {!isLoading && 
-         <Errorbanner 
-         isError={isError} retryCall={retryCall} 
-         setRetryCall={setRetryCall} 
-        />}
-        {!isError && (products.filter((product) => {
-          return product.title.toUpperCase().includes(input.toUpperCase())
-        }).map((product) => 
-        <Card 
-        key={product.id} products={product} 
-        openProductModal={openProductModal} 
-        />))}
-    </div>
+    <ProductModal 
+    closeModal={closeModal} isOpen={modalIsOpen} 
+    content={productInModal} addToCart={addToCart}
+    isProductInCart={isProductInCart}
+    />
+    <Loader 
+    isLoading={isLoading} 
+    />
+    {!isLoading && 
+      <Errorbanner 
+      isError={isError} retryCall={retryCall} 
+      setRetryCall={setRetryCall} 
+    />}
+    {!isError &&           
+      <ProductList
+      products={products}
+      categories={categories}
+      openProductModal={openProductModal}
+    />}
     <Footer/>
   </div>;
 }
