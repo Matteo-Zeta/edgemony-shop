@@ -2,7 +2,7 @@ import CartHeader from '../CartHeader/CartHeader'
 
 import './Header.css';
 
-function Header({imageSrc, cartSize, cartTotalPrice, setCartIsOpen }) {
+function Header({imageSrc, cartSize, cartTotalPrice, openCartModal }) {
   return (
   <header className="Header">
     <img id="logo" src={imageSrc} alt='logo' />
@@ -19,7 +19,7 @@ function Header({imageSrc, cartSize, cartTotalPrice, setCartIsOpen }) {
     <CartHeader
     cartSize={cartSize}
     cartTotalPrice={cartTotalPrice}
-    setCartIsOpen={setCartIsOpen}
+    openCartModal={openCartModal}
     />
   </header>
   )

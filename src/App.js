@@ -4,8 +4,9 @@ import "./App.css";
 
 import Header from './components/Header/Header';
 import Cart from './components/Cart/Cart'
-import ModalSidebar from './components/ModalSidebar/ModalSidebar'
 import Modal from './components/Modal/Modal'
+import ModalBodyCenter from './components/ModalBodyCenter/ModalBodyCenter'
+import ModalBodySidebar from './components/ModalBodySidebar/ModalBodySidebar'
 import Hero from './components/Hero/Hero';
 import Loader from './components/Loader/Loader';
 import Errorbanner from './components/ErrorBanner/Errorbanner';
@@ -27,31 +28,29 @@ const data = {
 
 function App() {
   // Product-Modal logic
-  const [modalIsOpen, setModalIsOpen] = useState(false) // modale aperta o meno
   const [productInModal, setProductInModal] = useState(null) // prodotti nella modale
+  const [productDetailIsOpen, setProductDetailIsOpen] = useState(false)
 
   function openProductModal(product) {
-    console.log(product)
     setProductInModal(product)
-    console.log(productInModal)
-    setModalIsOpen(true)
+    setProductDetailIsOpen(true)
   }
 
-  function closeModal() {
-    setModalIsOpen(false)
+  function closeProductModal() {
+    setProductDetailIsOpen(false)
     setTimeout(() => {
       setProductInModal(null)
     }, 500)
   }
   useEffect(() => {
-    if (modalIsOpen) {
+    if (productDetailIsOpen) {
       document.body.style.height = `100vh`
       document.body.style.overflow = `hidden`
     } else {
       document.body.style.height = ``
       document.body.style.overflow = ``
     }
-  }, [modalIsOpen])
+  }, [productDetailIsOpen])
 
   
   // API data logic
@@ -75,6 +74,12 @@ function App() {
 
     // Cart Logic
     const [cartIsOpen, setCartIsOpen] = useState(false);
+    function openCartModal(){
+      setCartIsOpen(true);
+    }
+    function closeCartModal(){
+      setCartIsOpen(false);
+    }
     useEffect(() => {
       if (cartIsOpen) {
         document.body.style.height = `100vh`
@@ -107,7 +112,7 @@ function App() {
   
     function addToCart(productId) {
       setCart([...cart, { id: productId, quantity: 1}]);
-      closeModal();
+      closeProductModal();
     }
     function removeFromCart(productId) {
       setCart(cart.filter((product) => product.id !== productId));
@@ -124,13 +129,21 @@ function App() {
   return <div className="App">
     <Header 
     imageSrc={data.logo} cartTotalPrice={cartTotalPrice}
-    cartSize={cartSize} setCartIsOpen={setCartIsOpen}
+    cartSize={cartSize} openCartModal={openCartModal}
     />
     <Hero 
     title={data.title} description={data.description}
     cover={data.cover} 
     />
-    <ModalSidebar
+    <Modal closeModal={closeCartModal} isOpen={cartIsOpen} >
+      <ModalBodySidebar isOpen={cartIsOpen} title={cartTitle} closeCartModal={closeCartModal} >
+      <Cart 
+      setQuantity={setQuantity} cartTotalPrice={cartTotalPrice}
+      productInCart={cartProducts} removeFromCart={removeFromCart}
+      />
+      </ModalBodySidebar>
+    </Modal>
+    {/* <ModalSidebar
     isOpen={cartIsOpen} title={cartTitle}
     setCartIsOpen={setCartIsOpen}
     >
@@ -138,14 +151,14 @@ function App() {
       setQuantity={setQuantity} cartTotalPrice={cartTotalPrice}
       productInCart={cartProducts} removeFromCart={removeFromCart}
       />
-    </ModalSidebar>
-    <Modal 
-    closeModal={closeModal} isOpen={modalIsOpen} 
-    >
-      <ProductDetails 
-      isProductInCart={isProductInCart}
-      product={productInModal} addToCart={addToCart}     
-      />
+    </ModalSidebar> */}
+    <Modal closeModal={closeProductModal} isOpen={productDetailIsOpen} >
+      <ModalBodyCenter closeModal={closeProductModal} isOpen={productDetailIsOpen} >
+        <ProductDetails 
+        isProductInCart={isProductInCart}
+        product={productInModal} addToCart={addToCart}     
+        />
+      </ModalBodyCenter>
     </Modal>
     <Loader 
     isLoading={isLoading} 
