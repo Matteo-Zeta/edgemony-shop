@@ -27,30 +27,44 @@ const data = {
 
 
 function App() {
-  // Product-Modal logic
-  const [productInModal, setProductInModal] = useState(null) // prodotti nella modale
-  const [productDetailIsOpen, setProductDetailIsOpen] = useState(false)
+  // Custom Hook per la modale
+  function useModal() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    function openModal(){
+      setIsModalOpen(true);
+    }
+    function closeModal(){
+      setIsModalOpen(false);
+    }
+    useEffect(() => {
+      if (isModalOpen) {
+        document.body.style.height = `100vh`
+        document.body.style.overflow = `hidden`
+      } else {
+        document.body.style.height = ``
+        document.body.style.overflow = ``
+      }
+    }, [isModalOpen]);
+    return [isModalOpen, openModal, closeModal];
+  }
+  // Modal Logic
+  const [productDetailIsOpen, openProductModal, closeProductModal] = useModal();
+  const [cartModalIsOpen, openCartModal, closeCartModal] = useModal();
 
-  function openProductModal(product) {
+  // Product-details logic
+  const [productInModal, setProductInModal] = useState(null) // prodotti nella modale
+
+  function openProductDetail(product) {
     setProductInModal(product)
-    setProductDetailIsOpen(true)
+    openProductModal();
   }
 
-  function closeProductModal() {
-    setProductDetailIsOpen(false)
+  function closeProductDetail() {
+    closeProductModal()
     setTimeout(() => {
       setProductInModal(null)
     }, 500)
   }
-  useEffect(() => {
-    if (productDetailIsOpen) {
-      document.body.style.height = `100vh`
-      document.body.style.overflow = `hidden`
-    } else {
-      document.body.style.height = ``
-      document.body.style.overflow = ``
-    }
-  }, [productDetailIsOpen])
 
   
   // API data logic
@@ -73,23 +87,7 @@ function App() {
   }, [retryCall])
 
     // Cart Logic
-    const [cartIsOpen, setCartIsOpen] = useState(false);
-    function openCartModal(){
-      setCartIsOpen(true);
-    }
-    function closeCartModal(){
-      setCartIsOpen(false);
-    }
-    useEffect(() => {
-      if (cartIsOpen) {
-        document.body.style.height = `100vh`
-        document.body.style.overflow = `hidden`
-      } else {
-        document.body.style.height = ``
-        document.body.style.overflow = ``
-      }
-    }, [cartIsOpen])
-    
+   
     const [cart, setCart] = useState([]);
 
     const cartProducts = cart.map((cartItem) => {
@@ -135,25 +133,17 @@ function App() {
     title={data.title} description={data.description}
     cover={data.cover} 
     />
-    <Modal closeModal={closeCartModal} isOpen={cartIsOpen} >
-      <ModalBodySidebar isOpen={cartIsOpen} title={cartTitle} closeCartModal={closeCartModal} >
+    <Modal closeModal={closeCartModal} isOpen={cartModalIsOpen} >
+      <ModalBodySidebar isOpen={cartModalIsOpen} title={cartTitle} closeCartModal={closeCartModal} >
       <Cart 
       setQuantity={setQuantity} cartTotalPrice={cartTotalPrice}
       productInCart={cartProducts} removeFromCart={removeFromCart}
       />
       </ModalBodySidebar>
     </Modal>
-    {/* <ModalSidebar
-    isOpen={cartIsOpen} title={cartTitle}
-    setCartIsOpen={setCartIsOpen}
-    >
-      <Cart 
-      setQuantity={setQuantity} cartTotalPrice={cartTotalPrice}
-      productInCart={cartProducts} removeFromCart={removeFromCart}
-      />
-    </ModalSidebar> */}
-    <Modal closeModal={closeProductModal} isOpen={productDetailIsOpen} >
-      <ModalBodyCenter closeModal={closeProductModal} isOpen={productDetailIsOpen} >
+
+    <Modal closeModal={closeProductDetail} isOpen={productDetailIsOpen} >
+      <ModalBodyCenter closeModal={closeProductDetail} isOpen={productDetailIsOpen} >
         <ProductDetails 
         isProductInCart={isProductInCart}
         product={productInModal} addToCart={addToCart}     
@@ -172,7 +162,7 @@ function App() {
       <ProductList
       products={products}
       categories={categories}
-      openProductModal={openProductModal}
+      openProductModal={openProductDetail}
     />}
     <Footer/>
   </div>;
