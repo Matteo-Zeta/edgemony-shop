@@ -5,7 +5,7 @@ import CategoriesFilter from "../CategoriesFilter/CategoriesFilter";
 
 import "./ProductList.css";
 
-function ProductList({ products, categories, openProductModal }) {
+function ProductList({ products, categories }) {
   const [searchTerm, setSearchTerm] = useState();
   const [selectedCategories, setSelectedCategories] = useState([]);
 
@@ -32,7 +32,6 @@ function ProductList({ products, categories, openProductModal }) {
           <ProductCard
             product={product}
             key={product.id}
-            openProductModal={() => openProductModal(product)}
           />
         ))}
       </div>
