@@ -1,6 +1,7 @@
 import './ProductCard.css';
+import { Link } from "react-router-dom";
 
-function ProductCard({ product, openProductModal }) {
+function ProductCard({ product }) {
 
   return (
   <div className="Card">
@@ -14,10 +15,9 @@ function ProductCard({ product, openProductModal }) {
     </div>
 
     <div className="price-container">
-      <button 
-      type="button" 
-      onClick={() => openProductModal(product)}>Dettagli
-      </button>
+    <Link to={`/product/${product.id}`}>
+      <button>Dettagli</button>
+    </Link>
       <b>{product.price} €</b>
     </div>
   </div>
