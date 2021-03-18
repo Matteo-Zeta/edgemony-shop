@@ -8,7 +8,7 @@ import {
 import "./App.css";
 import Home from './pages/Home'
 import Page404 from './pages/Page404'
-import Product from './pages/Product'
+import Product from './pages/Product/Product'
 import Header from './components/Header/Header';
 import Modal from './components/Modal/Modal'
 import ModalBodySidebar from './components/ModalBodySidebar/ModalBodySidebar'
