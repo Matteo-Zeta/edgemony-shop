@@ -1,7 +1,6 @@
-import "./Cart.css";
-import CartProduct from "../CartProduct/CartProduct"
 import { formatPrice } from "../../services/utils";
-
+import CartProduct from '../../components/CartProduct/CartProduct'
+import "./CartPage.css"
 
 function Cart({ 
   cartTotalPrice, 

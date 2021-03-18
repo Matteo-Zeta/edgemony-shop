@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -6,14 +6,11 @@ import {
 } from "react-router-dom";
 
 import "./App.css";
-import Home from './pages/Home'
-import Page404 from './pages/Page404'
+import Home from './pages/Home';
+import CartPage from './pages/Cart/CartPage';
+import Page404 from './pages/Page404';
 import Product from './pages/Product/Product'
 import Header from './components/Header/Header';
-import Modal from './components/Modal/Modal'
-import ModalBodySidebar from './components/ModalBodySidebar/ModalBodySidebar'
-import Cart from './components/Cart/Cart'
-
 
 const data = {
   title: "Edgemony Shop",
@@ -26,29 +23,6 @@ const data = {
 
 
 function App() {
-  // Custom Hook per la modale
-  function useModal() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    function openModal() {
-      setIsModalOpen(true);
-    }
-    function closeModal() {
-      setIsModalOpen(false);
-    }
-    useEffect(() => {
-      if (isModalOpen) {
-        document.body.style.height = `100vh`
-        document.body.style.overflow = `hidden`
-      } else {
-        document.body.style.height = ``
-        document.body.style.overflow = ``
-      }
-    }, [isModalOpen]);
-    return [isModalOpen, openModal, closeModal];
-  }
-  // Modal Logic
-  const [cartModalIsOpen, openCartModal, closeCartModal] = useModal();
-  // API data logic
 
   // Cart Logic
 
@@ -82,29 +56,29 @@ function App() {
   return (
     <Router>
       <div className="App">
-
         <Header
           imageSrc={data.logo}
           cartTotalPrice={cartTotalPrice}
           cartSize={cartSize}
-          openCartModal={openCartModal}
         />
-        <Modal closeModal={closeCartModal} isOpen={cartModalIsOpen} >
-          <ModalBodySidebar isOpen={cartModalIsOpen} title={cartTitle} closeCartModal={closeCartModal} >
-            <Cart
-              setQuantity={setQuantity} cartTotalPrice={cartTotalPrice}
-              productInCart={cart} removeFromCart={removeFromCart}
-            />
-          </ModalBodySidebar>
-        </Modal>
-        
+
         <Switch>
           <Route exact path="/">
             <Home />
           </Route>
 
           <Route path="/product/:productId">
-            <Product isInCart={isInCart} addToCart={addToCart} />
+            <Product
+              isInCart={isInCart}
+              addToCart={addToCart}
+            />
+          </Route>
+
+          <Route path="/cart">
+            <CartPage
+              setQuantity={setQuantity} cartTotalPrice={cartTotalPrice}
+              productInCart={cart} removeFromCart={removeFromCart}
+            />
           </Route>
 
           <Route path="*">

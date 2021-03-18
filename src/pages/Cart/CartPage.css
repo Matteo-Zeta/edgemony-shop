@@ -1,4 +1,8 @@
-
+.Cart {
+  padding-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+}
 .Cart-content {
   padding: 10px;
   display: flex;

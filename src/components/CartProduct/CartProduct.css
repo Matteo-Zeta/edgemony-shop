@@ -1,6 +1,9 @@
 .CartProduct {
   margin-top: 20px;
-  /* background-color: wheat; */
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);
+  padding: 10px;
   display: flex;
 }
 .CartProduct .info-wrapper {
