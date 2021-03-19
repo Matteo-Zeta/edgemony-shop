@@ -16,23 +16,27 @@ const data = {
     "https://images.pexels.com/photos/4123897/pexels-photo-4123897.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
 };
 
-
+let cache;
 function Home() {
-  
+
   // API data logic
-  const [products, setProducts] = useState([])
-  const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState(cache ? cache.products : [])
+  const [categories, setCategories] = useState(cache ? cache.categories : []);
   const [isLoading, setIsLoading] = useState(false)
   const [isError, setIsError] = useState('')
   const [retryCall, setRetryCall] = useState(false)
 
   useEffect(() => {
+    if (cache !== undefined) {
+      return;
+    }
     setIsError('')
     setIsLoading(true)
     Promise.all([fetchProducts(), fetchCatogories()])
       .then(([products, categories]) => {
         setProducts(products);
         setCategories(categories);
+        cache = { products, categories };
       })
       .catch((err) => setIsError(err.message))
       .finally(() => setIsLoading(false));
@@ -43,24 +47,24 @@ function Home() {
   return (
     <div className="App">
 
-      <Hero 
-      title={data.title} description={data.description}
-      cover={data.cover} 
+      <Hero
+        title={data.title} description={data.description}
+        cover={data.cover}
       />
-      <Loader 
-      isLoading={isLoading} 
+      <Loader
+        isLoading={isLoading}
       />
-      {!isLoading && 
-        <Errorbanner 
-        isError={isError} retryCall={retryCall} 
-        setRetryCall={setRetryCall} 
-      />}
-      {!isError &&           
+      {!isLoading &&
+        <Errorbanner
+          isError={isError} retryCall={retryCall}
+          setRetryCall={setRetryCall}
+        />}
+      {!isError &&
         <ProductList
-        products={products}
-        categories={categories}
-      />}
-      <Footer/>
+          products={products}
+          categories={categories}
+        />}
+      <Footer />
     </div>
   )
 }
