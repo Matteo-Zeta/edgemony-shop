@@ -1,5 +1,7 @@
 import './CartProduct.css';
 import { Link } from "react-router-dom";
+import { formatPrice } from "../../services/utils";
+
 
 
 function CartProduct({ product, removeFromCart, setQuantity }) {
@@ -14,7 +16,7 @@ function CartProduct({ product, removeFromCart, setQuantity }) {
       </Link>
       <div className="info-wrapper">
         <b>{product.title}</b>
-        <span>€ {product.price}</span>
+        <span>{formatPrice(product.price * product.quantity)}</span>
         <div className="quantity-wrapper">
           <button type="button" disabled={product.quantity < 2}
             onClick={() => setQuantity(product.id, product.quantity - 1)}>

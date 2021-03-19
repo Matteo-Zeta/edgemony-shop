@@ -7,9 +7,12 @@
   padding: 10px;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
 }
 .Cart .Cart-footer {
   text-align: left;
   padding: 10px;
+}
+
+.Cart .Cart-footer #cartsvg {
+  opacity: 0.1;
 }

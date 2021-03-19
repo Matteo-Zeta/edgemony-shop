@@ -32,7 +32,6 @@ function App() {
     return acc + cartItem.price * cartItem.quantity;
   }, 0)
   const cartSize = cart.length;
-  let cartTitle = (!!cartSize ? "Your products:" : "The cart is empty")
 
   function isInCart(product) {
     return product !== null && cart.find((p) => p.id === product.id) != null;
