@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 
 import ProductCard from "../ProductCard/ProductCard";
@@ -8,7 +7,6 @@ import CategoriesFilter from "../CategoriesFilter/CategoriesFilter";
 import "./ProductList.css";
 
 function ProductList({ products, categories }) {
-  const [searchTerm, setSearchTerm] = useState();
 
   const location = useLocation();
   const history = useHistory();
@@ -16,21 +14,29 @@ function ProductList({ products, categories }) {
   const searchParams = new URLSearchParams(location.search); //creiamo questo ogg. partendo dalla querystring attuale
   const selectedCategoriesParam = searchParams.get('categories');
   const selectedCategories = selectedCategoriesParam
-  ? selectedCategoriesParam.split(',')
-  : [];
+    ? selectedCategoriesParam.split(',')
+    : [];
 
   function updateCategories(categories) {
     const selectedParam = categories.join(",");
-    if (categories.length === 0) {      
+    if (categories.length === 0) {
       searchParams.delete('categories'); // puliamo la querystring dal parametro categories
     } else {
       searchParams.set('categories', selectedParam); // aggiungiamo un nuovo parametro che ha come valore l'array delle nostre categorie selezionate, separate da ','
     }
     history.push({ search: '?' + searchParams.toString() }) // aggiorniamo la nostra querystring
   }
+  const searchQuery = searchParams.get('q') || ""; //se il get da null imposto la stringa vuota
+  function updateSearchterm(term) {
+    if (!term) {
+      searchParams.delete('q');
+    } else {
+      searchParams.set('q', term);
+    }
+    history.push({ search: '?' + searchParams.toString() })
+  }
 
-
-  const termRegexp = new RegExp(searchTerm, "i"); //espressione regolare per la ricerca. 'I' è il modificatore che ignora la distinzione tra maiusc e min.
+  const termRegexp = new RegExp(searchQuery, "i"); //espressione regolare per la ricerca. 'I' è il modificatore che ignora la distinzione tra maiusc e min.
   const filteredProducts = products.filter(
     (product) =>
       product.title.search(termRegexp) !== -1 &&
@@ -41,7 +47,7 @@ function ProductList({ products, categories }) {
   return (
     <div className="ProductList">
       <div className="ProductList__filters">
-        <Search onSearch={setSearchTerm} />
+        <Search onSearch={updateSearchterm} />
         <CategoriesFilter
           categories={categories}
           selectedCategories={selectedCategories}
