@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from "react-router-dom";
+import { postItemToCart, deleteItemFromCart } from "./services/api"
 
 import "./App.css";
 import Home from './pages/Home';
@@ -12,6 +13,7 @@ import Page404 from './pages/Page404';
 import Product from './pages/Product/Product'
 import Header from './components/Header/Header';
 
+let cartId;
 const data = {
   title: "Edgemony Shop",
   description: "A fake e-commerce with a lot of potential",
@@ -37,8 +39,16 @@ function App() {
     return product !== null && cart.find((p) => p.id === product.id) != null;
   }
 
-  function addToCart(product) {
-    setCart([...cart, { ...product, quantity: 1 }]);
+
+  async function addToCart(product) {
+    try {
+      const cartObj = await postItemToCart(cartId, product.id, 1)
+      debugger
+      setCart(cartObj.items);
+    } catch (error) {
+      console.error(error.message);
+    }
+
   }
   function removeFromCart(productId) {
     setCart(cart.filter((product) => product.id !== productId));
@@ -51,7 +61,16 @@ function App() {
       cartItem.id !== productId ? cartItem : { ...cartItem, quantity });
     return setCart(newCart);
   }
-
+  useEffect(() => {
+    const cartFromStorage = localStorage.getItem('edgemony-cart');
+    try {
+      const cartObj = JSON.parse(cartFromStorage)
+      setCart(cartObj.items)
+      cartId = cartObj.id;
+    } catch (error) {
+      console.error(error.message);
+    }
+  }, [])
   return (
     <Router>
       <div className="App">
