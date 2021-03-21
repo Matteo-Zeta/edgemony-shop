@@ -1,6 +1,7 @@
 import { formatPrice } from "../../services/utils";
 import CartProduct from '../../components/CartProduct/CartProduct'
-import { ReactComponent as EmptyCart} from "../../Icon/EmptyCart.svg";
+import Loader from '../../components/Loader/Loader'
+import { ReactComponent as EmptyCart } from "../../Icon/EmptyCart.svg";
 import "./CartPage.css"
 
 
@@ -10,11 +11,13 @@ function Cart({
   productInCart,
   removeFromCart,
   setQuantity,
-
+  isLoading
 }) {
   const cartSize = productInCart.length;
   let cartTitle = (!!cartSize ? "Your products:" : "The cart is empty")
-  return (
+  return isLoading ? (
+    <Loader isLoading={isLoading} />
+  ) : (
     <div className="Cart">
       <h1>{cartTitle}</h1>
       <div className="Cart-content">

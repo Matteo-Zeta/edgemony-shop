@@ -4,7 +4,7 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import { postItemToCart, deleteItemFromCart } from "./services/api"
+import { postItemToCart, deleteItemFromCart, fetchCart } from "./services/api"
 
 import "./App.css";
 import Home from './pages/Home';
@@ -12,6 +12,7 @@ import CartPage from './pages/Cart/CartPage';
 import Page404 from './pages/Page404';
 import Product from './pages/Product/Product'
 import Header from './components/Header/Header';
+import Errorbanner from './components/ErrorBanner/Errorbanner'
 
 let cartId;
 const data = {
@@ -43,34 +44,48 @@ function App() {
   async function addToCart(product) {
     try {
       const cartObj = await postItemToCart(cartId, product.id, 1)
-      debugger
       setCart(cartObj.items);
     } catch (error) {
       console.error(error.message);
     }
 
   }
-  function removeFromCart(productId) {
-    setCart(cart.filter((product) => product.id !== productId));
-  }
-  function setQuantity(productId, quantity) {
-    if (quantity < 1) {
-      throw new Error('Invalid quantity');
-    }
-    const newCart = cart.map((cartItem) =>
-      cartItem.id !== productId ? cartItem : { ...cartItem, quantity });
-    return setCart(newCart);
-  }
-  useEffect(() => {
-    const cartFromStorage = localStorage.getItem('edgemony-cart');
+  async function removeFromCart(productId) {
     try {
-      const cartObj = JSON.parse(cartFromStorage)
-      setCart(cartObj.items)
-      cartId = cartObj.id;
+      const cartObj = await deleteItemFromCart(cartId, productId)
+      setCart(cartObj.items);
     } catch (error) {
       console.error(error.message);
     }
-  }, [])
+  }
+
+  async function setQuantity(productId, quantity) {
+    try {
+      const cartObj = await postItemToCart(cartId, productId, quantity)
+      setCart(cartObj.items);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+  const [isLoading, setIsLoading] = useState(false)
+  const [isError, setIsError] = useState('')
+  const [retryCall, setRetryCall] = useState(false)
+
+  useEffect(() => {
+    setIsError('')
+    setIsLoading(true)
+    const cartIdFromStorage = localStorage.getItem('edgemony-cart-id');
+    fetchCart(cartIdFromStorage)
+      .then(data => {
+        setCart(data.items)
+        cartId = data.id
+      })
+      .catch(error => {
+        setIsError(error.message)
+      })
+      .finally(() => setIsLoading(false));
+  }, [retryCall])
+
   return (
     <Router>
       <div className="App">
@@ -96,6 +111,7 @@ function App() {
             <CartPage
               setQuantity={setQuantity} cartTotalPrice={cartTotalPrice}
               productInCart={cart} removeFromCart={removeFromCart}
+              isLoading={isLoading}
             />
           </Route>
 
@@ -103,7 +119,11 @@ function App() {
             <Page404 />
           </Route>
         </Switch>
-
+        { !isLoading &&
+        <Errorbanner
+          isError={isError} retryCall={retryCall}
+          setRetryCall={setRetryCall}
+        />}
       </div>
     </Router>
   )
